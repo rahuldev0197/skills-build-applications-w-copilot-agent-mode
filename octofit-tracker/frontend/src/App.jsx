@@ -1,121 +1,70 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
+import Activities from './components/Activities.jsx'
+import Leaderboard from './components/Leaderboard.jsx'
+import Teams from './components/Teams.jsx'
+import Users from './components/Users.jsx'
+import Workouts from './components/Workouts.jsx'
+import { apiBaseUrl } from './api.js'
 import './App.css'
 
+const navigation = [
+  ['/', 'Overview'],
+  ['/activities', 'Activities'],
+  ['/leaderboard', 'Leaderboard'],
+  ['/teams', 'Teams'],
+  ['/users', 'Athletes'],
+  ['/workouts', 'Workouts'],
+]
+
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-shell">
+      <header className="navbar navbar-expand-lg border-bottom bg-white">
+        <div className="container">
+          <NavLink className="navbar-brand fw-bold text-primary" to="/">OctoFit Tracker</NavLink>
+          <nav className="d-flex flex-wrap gap-2" aria-label="Primary navigation">
+            {navigation.map(([to, label]) => (
+              <NavLink
+                className={({ isActive }) => `nav-link px-2 ${isActive ? 'active fw-semibold' : ''}`}
+                end={to === '/'}
+                key={to}
+                to={to}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </header>
+      <main className="container py-5">
+        <Routes>
+          <Route path="/" element={<Overview />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/workouts" element={<Workouts />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </main>
+      <footer className="border-top py-3 text-center text-secondary small">
+        API: {apiBaseUrl}
+      </footer>
+    </div>
+  )
+}
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+function Overview() {
+  return (
+    <section className="hero-panel p-4 p-md-5 rounded-4">
+      <p className="text-uppercase small fw-bold text-primary mb-2">Move together</p>
+      <h1 className="display-4 fw-bold">Small steps. Strong teams. Big progress.</h1>
+      <p className="lead text-secondary mb-4">Track activities, discover workouts, and climb the leaderboard with OctoFit.</p>
+      <div className="d-flex flex-wrap gap-2">
+        <NavLink className="btn btn-primary" to="/activities">View activities</NavLink>
+        <NavLink className="btn btn-outline-primary" to="/workouts">Find a workout</NavLink>
+      </div>
+    </section>
   )
 }
 
