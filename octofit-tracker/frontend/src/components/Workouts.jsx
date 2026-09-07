@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api.js'
 import ResourceState from './ResourceState.jsx'
 
+const workoutsEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : 'http://localhost:8000/api/workouts/'
+
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [state, setState] = useState({ loading: true, error: '' })
 
   useEffect(() => {
-    fetchCollection('workouts')
+    fetchCollection(workoutsEndpoint)
       .then((data) => setWorkouts(data))
       .catch((error) => setState({ loading: false, error: error.message }))
       .finally(() => setState((current) => ({ ...current, loading: false })))
